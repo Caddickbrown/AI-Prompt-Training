@@ -208,7 +208,7 @@ html[data-theme="light"] {
 }
 
 [data-theme="light"] .sidebar-overlay.active {
-    background: rgba(0, 0, 0, 0.5);
+    background: transparent;
 }
 
 [data-theme="light"] .example-box {
@@ -1787,7 +1787,8 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.7);
+        /* Keep overlay for click-to-close, but don't dim the UI */
+        background: transparent;
         z-index: 1000;
         opacity: 0;
         transition: opacity var(--transition-base);
