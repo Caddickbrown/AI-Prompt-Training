@@ -1,0 +1,755 @@
+// Course data structure with expanded modules
+const courseData = {
+    modules: [
+        {
+            id: 'intro',
+            title: '🎯 Introduction to Prompt Engineering',
+            content: `
+                <h2>Welcome to Prompt Engineering!</h2>
+                <p>Prompt engineering is the art and science of crafting effective instructions for AI models to achieve desired outputs. It's a crucial skill in the age of AI, enabling you to unlock the full potential of language models.</p>
+                
+                <h3>What You'll Learn</h3>
+                <ul>
+                    <li>Fundamental concepts of prompt engineering</li>
+                    <li>Techniques for writing effective prompts</li>
+                    <li>Advanced strategies for complex tasks</li>
+                    <li>Best practices and common pitfalls</li>
+                    <li>Real-world applications and examples</li>
+                </ul>
+
+                <div class="tip-box">
+                    <h4>💡 Pro Tip</h4>
+                    <p>Great prompt engineering is like being a good communicator - clarity, context, and specificity are key!</p>
+                </div>
+
+                <h3>Why Prompt Engineering Matters</h3>
+                <p>With well-crafted prompts, you can:</p>
+                <ul>
+                    <li>Get more accurate and relevant responses</li>
+                    <li>Reduce the need for multiple iterations</li>
+                    <li>Control the tone, style, and format of outputs</li>
+                    <li>Solve complex problems more efficiently</li>
+                    <li>Unlock creative and analytical capabilities</li>
+                </ul>
+            `
+        },
+        {
+            id: 'basics',
+            title: 'Basic Prompt Engineering Concepts',
+            content: `
+                <h2>Basic Prompt Engineering Concepts</h2>
+                
+                <h3>1. Clarity and Specificity</h3>
+                <p>The most important principle: be clear and specific about what you want.</p>
+                
+                <div class="example-box">
+                    <h4>❌ Vague Prompt</h4>
+                    <div class="code-block">
+                        <pre>Write about AI</pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>✅ Specific Prompt</h4>
+                    <div class="code-block">
+                        <pre>Write a 500-word article explaining how large language models work, 
+targeted at beginners, with three main sections: architecture, 
+training process, and applications.</pre>
+                    </div>
+                </div>
+
+                <h3>2. Role Assignment</h3>
+                <p>Assign a role to the AI to get better context-specific responses.</p>
+                
+                <div class="code-block">
+                    <pre>You are an expert Python developer with 10 years of experience. 
+Explain how to optimize database queries in Django.</pre>
+                </div>
+
+                <h3>3. Step-by-Step Instructions</h3>
+                <p>Break complex tasks into clear steps.</p>
+                
+                <div class="code-block">
+                    <pre>Analyze this code for security vulnerabilities:
+1. Check for SQL injection risks
+2. Identify authentication weaknesses
+3. Review input validation
+4. Provide specific recommendations</pre>
+                </div>
+
+                <h3>4. Output Format Specification</h3>
+                <p>Specify the desired format explicitly.</p>
+                
+                <div class="code-block">
+                    <pre>Create a project plan in JSON format with the following structure:
+{
+  "project_name": "...",
+  "tasks": [...],
+  "timeline": "..."
+}</pre>
+                </div>
+
+                <div class="tip-box">
+                    <h4>💡 Remember</h4>
+                    <p>Always specify format, length, tone, and any constraints upfront to avoid multiple iterations.</p>
+                </div>
+            `
+        },
+        {
+            id: 'techniques',
+            title: 'Advanced Techniques',
+            content: `
+                <h2>Advanced Prompt Engineering Techniques</h2>
+                
+                <h3>1. Few-Shot Learning</h3>
+                <p>Provide examples to guide the AI's output format and style.</p>
+                
+                <div class="code-block">
+                    <pre>Convert these sentences to formal business language:
+
+Example 1:
+Casual: "Hey, can you send me that file?"
+Formal: "Could you please forward the document at your earliest convenience?"
+
+Example 2:
+Casual: "That's a great idea!"
+Formal: "That proposal demonstrates excellent strategic thinking."
+
+Now convert this:
+Casual: "I need this done by Friday"</pre>
+                </div>
+
+                <h3>2. Chain of Thought</h3>
+                <p>Encourage the AI to show its reasoning process.</p>
+                
+                <div class="code-block">
+                    <pre>Solve this problem step by step, showing your reasoning:
+
+A store sells apples for $2 each and oranges for $3 each. 
+If you buy 5 apples and 3 oranges, how much do you spend?
+
+Think through this step by step:
+1. Calculate cost of apples
+2. Calculate cost of oranges  
+3. Add them together</pre>
+                </div>
+
+                <h3>3. Constraint Setting</h3>
+                <p>Set boundaries and constraints to control output.</p>
+                
+                <div class="code-block">
+                    <pre>Write a product description that:
+- Is exactly 150 words
+- Uses active voice only
+- Includes exactly 3 benefits
+- Avoids superlatives (best, greatest, etc.)
+- Targets professionals aged 30-50</pre>
+                </div>
+
+                <h3>4. Iterative Refinement</h3>
+                <p>Build on previous responses for complex tasks.</p>
+                
+                <div class="code-block">
+                    <pre>First, outline the main points for an article about renewable energy.
+Then, expand each point into a full paragraph.
+Finally, add an introduction and conclusion.</pre>
+                </div>
+
+                <h3>5. Context Windows</h3>
+                <p>Provide relevant context to improve accuracy.</p>
+                
+                <div class="code-block">
+                    <pre>Context: You're helping a small business owner who runs a local bakery.
+
+Task: Write a social media post announcing a new gluten-free product line.
+Consider: Their target audience is health-conscious locals, and they want 
+to emphasize quality ingredients and local sourcing.</pre>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Common Mistake</h4>
+                    <p>Avoid overloading prompts with too many constraints at once. Start simple and add complexity gradually.</p>
+                </div>
+            `
+        },
+        {
+            id: 'exercises',
+            title: 'Interactive Exercises',
+            content: `
+                <h2>Practice Makes Perfect</h2>
+                <p>Try these interactive exercises to test your prompt engineering skills!</p>
+                
+                <div class="exercise-box">
+                    <h4>Exercise 1: Improve This Prompt</h4>
+                    <p>Rewrite the following prompt to be more specific and effective:</p>
+                    <div class="code-block">
+                        <pre>Original: "Write something about marketing"</pre>
+                    </div>
+                    <textarea class="interactive-input" id="exercise1" placeholder="Write your improved prompt here..."></textarea>
+                    <button class="btn btn-primary" onclick="checkExercise(1)">Check Answer</button>
+                    <div id="feedback1" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2: Role-Based Prompt</h4>
+                    <p>Create a prompt that asks an AI to act as a specific expert and solve a problem:</p>
+                    <textarea class="interactive-input" id="exercise2" placeholder="Write your role-based prompt here..."></textarea>
+                    <button class="btn btn-primary" onclick="checkExercise(2)">Get Feedback</button>
+                    <div id="feedback2" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3: Format Specification</h4>
+                    <p>Write a prompt that requests information in a specific format (JSON, table, list, etc.):</p>
+                    <textarea class="interactive-input" id="exercise3" placeholder="Write your format-specific prompt here..."></textarea>
+                    <button class="btn btn-primary" onclick="checkExercise(3)">Get Feedback</button>
+                    <div id="feedback3" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+                </div>
+            `
+        },
+        {
+            id: 'quiz',
+            title: 'Knowledge Check Quiz',
+            content: `
+                <h2>Test Your Knowledge</h2>
+                <p>Answer these questions to see how well you understand prompt engineering!</p>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 1: What is the most important principle in prompt engineering?</h4>
+                        <ul class="quiz-options">
+                            <li class="quiz-option" data-correct="true" onclick="selectOption(this)">Clarity and specificity</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Using as many words as possible</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Always using technical jargon</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Making prompts as short as possible</li>
+                        </ul>
+                        <div class="quiz-feedback" id="feedback-q1"></div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Question 2: What is few-shot learning in prompt engineering?</h4>
+                        <ul class="quiz-options">
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Using very few words</li>
+                            <li class="quiz-option" data-correct="true" onclick="selectOption(this)">Providing examples to guide the AI's output</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Asking the AI to learn quickly</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Using prompts only once</li>
+                        </ul>
+                        <div class="quiz-feedback" id="feedback-q2"></div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Question 3: Why is role assignment useful in prompts?</h4>
+                        <ul class="quiz-options">
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">It makes prompts longer</li>
+                            <li class="quiz-option" data-correct="true" onclick="selectOption(this)">It provides context for better, domain-specific responses</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">It's required for all prompts</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">It makes the AI work faster</li>
+                        </ul>
+                        <div class="quiz-feedback" id="feedback-q3"></div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Question 4: What should you specify in a prompt to control output format?</h4>
+                        <ul class="quiz-options">
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Only the topic</li>
+                            <li class="quiz-option" data-correct="true" onclick="selectOption(this)">Format, length, tone, and constraints</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Just the length</li>
+                            <li class="quiz-option" data-correct="false" onclick="selectOption(this)">Nothing - let the AI decide</li>
+                        </ul>
+                        <div class="quiz-feedback" id="feedback-q4"></div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 'best-practices',
+            title: 'Best Practices & Common Pitfalls',
+            content: `
+                <h2>Best Practices & Common Pitfalls</h2>
+                
+                <h3>✅ Best Practices</h3>
+                
+                <div class="tip-box">
+                    <h4>1. Start with Clear Objectives</h4>
+                    <p>Know exactly what you want before writing your prompt. Define the goal, audience, and success criteria.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>2. Use Structured Prompts</h4>
+                    <p>Organize prompts with clear sections: context, task, constraints, and output format.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>3. Iterate and Refine</h4>
+                    <p>Don't expect perfection on the first try. Refine prompts based on outputs, building on what works.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>4. Provide Context</h4>
+                    <p>Give relevant background information. The more context, the better the AI can understand your needs.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>5. Test Different Approaches</h4>
+                    <p>Experiment with various techniques (few-shot, chain-of-thought, role assignment) to find what works best.</p>
+                </div>
+
+                <h3>❌ Common Pitfalls to Avoid</h3>
+                
+                <div class="warning-box">
+                    <h4>1. Being Too Vague</h4>
+                    <p><strong>Bad:</strong> "Write something about technology"<br>
+                    <strong>Good:</strong> "Write a 300-word blog post about the impact of AI on healthcare, targeting medical professionals, with three specific examples."</p>
+                </div>
+
+                <div class="warning-box">
+                    <h4>2. Overloading with Constraints</h4>
+                    <p>Too many constraints at once can confuse the AI. Start simple and add complexity gradually.</p>
+                </div>
+
+                <div class="warning-box">
+                    <h4>3. Ignoring Context</h4>
+                    <p>Failing to provide relevant context leads to generic responses. Always include necessary background.</p>
+                </div>
+
+                <div class="warning-box">
+                    <h4>4. Not Specifying Format</h4>
+                    <p>If you need a specific format (JSON, table, list), always specify it explicitly.</p>
+                </div>
+
+                <div class="warning-box">
+                    <h4>5. Forgetting to Iterate</h4>
+                    <p>Don't accept the first output if it's not quite right. Refine your prompt and try again.</p>
+                </div>
+
+                <h3>Real-World Application Tips</h3>
+                <ul>
+                    <li><strong>Content Creation:</strong> Specify tone, length, audience, and key points</li>
+                    <li><strong>Code Generation:</strong> Include language, framework, style guide, and requirements</li>
+                    <li><strong>Data Analysis:</strong> Provide data context, analysis type, and output format</li>
+                    <li><strong>Problem Solving:</strong> Break into steps, show reasoning, and define success criteria</li>
+                    <li><strong>Creative Writing:</strong> Set genre, style, character details, and plot constraints</li>
+                </ul>
+            `
+        },
+        {
+            id: 'examples',
+            title: 'Real-World Examples',
+            content: `
+                <h2>Real-World Prompt Examples</h2>
+                <p>Here are practical examples you can adapt for your own use cases.</p>
+                
+                <h3>Example 1: Content Writing</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre>You are a professional content writer specializing in technology. 
+Write a blog post with the following requirements:
+
+Topic: The future of remote work technology
+Target Audience: HR professionals and team managers
+Length: 800-1000 words
+Tone: Professional but approachable
+Structure:
+  - Engaging introduction with a hook
+  - 3 main sections with subheadings
+  - Real-world examples in each section
+  - Actionable conclusion with next steps
+
+Include specific statistics and trends from 2024.</pre>
+                </div>
+
+                <h3>Example 2: Code Review</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre>You are a senior software engineer reviewing Python code. 
+Analyze the following code snippet:
+
+[PASTE CODE HERE]
+
+Provide feedback in this format:
+1. **Security Issues**: List any vulnerabilities
+2. **Performance**: Identify optimization opportunities  
+3. **Best Practices**: Note any style or convention issues
+4. **Suggestions**: Provide specific improvement recommendations
+
+Be constructive and include code examples for fixes.</pre>
+                </div>
+
+                <h3>Example 3: Data Analysis</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre>You are a data analyst. Analyze the following dataset and provide insights:
+
+Dataset: [DESCRIBE YOUR DATA]
+Context: E-commerce sales data for Q4 2024
+
+Please provide:
+1. Summary statistics (mean, median, key metrics)
+2. Trends and patterns identified
+3. Three key insights with business implications
+4. Visualizations recommendations (describe what charts would be useful)
+5. Actionable recommendations
+
+Format the response as a structured report with clear sections.</pre>
+                </div>
+
+                <h3>Example 4: Problem Solving</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre>Solve this problem step by step, showing your reasoning at each stage:
+
+Problem: [DESCRIBE YOUR PROBLEM]
+
+Approach:
+1. Break down the problem into components
+2. Identify constraints and requirements
+3. Explore possible solutions
+4. Evaluate pros/cons of each approach
+5. Recommend the best solution with justification
+6. Outline implementation steps
+
+Show your work clearly so I can follow your thought process.</pre>
+                </div>
+
+                <h3>Example 5: Creative Writing</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre>Write a short story (1000-1500 words) with these specifications:
+
+Genre: Science fiction
+Setting: Near-future Earth, 2050
+Main Character: A climate scientist working on geoengineering
+Conflict: Ethical dilemma about deploying a new technology
+Theme: Responsibility and consequences of scientific advancement
+
+Requirements:
+- Show, don't tell (use descriptive scenes)
+- Include dialogue that reveals character
+- End with an open-ended conclusion that makes readers think
+- Use vivid sensory details</pre>
+                </div>
+
+                <div class="tip-box">
+                    <h4>💡 Pro Tip</h4>
+                    <p>Adapt these templates to your specific needs. The key is maintaining the structure while customizing the content and requirements.</p>
+                </div>
+            `
+        },
+        {
+            id: 'conclusion',
+            title: 'Conclusion & Next Steps',
+            content: `
+                <h2>Congratulations! 🎉</h2>
+                <p>You've completed the Prompt Engineering & AI Usage training course! You now have a solid foundation in crafting effective prompts.</p>
+                
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li>Clarity and specificity are fundamental to good prompts</li>
+                    <li>Role assignment and context improve AI responses</li>
+                    <li>Few-shot learning and chain-of-thought are powerful techniques</li>
+                    <li>Iteration and refinement lead to better results</li>
+                    <li>Format specification prevents misunderstandings</li>
+                </ul>
+
+                <h3>Next Steps</h3>
+                <div class="tip-box">
+                    <h4>1. Practice Regularly</h4>
+                    <p>Apply these techniques in your daily work. The more you practice, the better you'll become.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>2. Experiment and Learn</h4>
+                    <p>Try different approaches for the same task. Compare results and learn what works best for different scenarios.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>3. Build Your Prompt Library</h4>
+                    <p>Save effective prompts as templates. Build a collection you can reuse and adapt.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>4. Stay Updated</h4>
+                    <p>AI technology evolves rapidly. Stay informed about new models, capabilities, and prompt engineering techniques.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>5. Share and Collaborate</h4>
+                    <p>Share successful prompts with your team. Learn from others' approaches and build on collective knowledge.</p>
+                </div>
+
+                <h3>Resources for Further Learning</h3>
+                <ul>
+                    <li>Explore different AI models and their capabilities</li>
+                    <li>Join prompt engineering communities and forums</li>
+                    <li>Study examples from prompt engineering repositories</li>
+                    <li>Experiment with prompt optimization tools</li>
+                    <li>Read research papers on prompt engineering techniques</li>
+                </ul>
+
+                <div class="example-box">
+                    <h4>Final Challenge</h4>
+                    <p>Create a comprehensive prompt for a real project you're working on. Apply all the techniques you've learned:</p>
+                    <ul>
+                        <li>Clear objectives and context</li>
+                        <li>Role assignment</li>
+                        <li>Specific format requirements</li>
+                        <li>Step-by-step instructions</li>
+                        <li>Constraints and boundaries</li>
+                    </ul>
+                    <p>Then iterate and refine it until you get excellent results!</p>
+                </div>
+
+                <p style="margin-top: 2rem; text-align: center; font-size: 1.2rem;">
+                    <strong>Thank you for completing this course! Happy prompt engineering! 🚀</strong>
+                </p>
+            `
+        }
+    ]
+};
+
+// Application state
+let currentModuleIndex = 0;
+let completedModules = new Set();
+let quizAnswers = {};
+
+// Initialize the application
+function init() {
+    renderNavigation();
+    renderModule(currentModuleIndex);
+    updateProgress();
+    setupEventListeners();
+}
+
+// Render navigation sidebar
+function renderNavigation() {
+    const moduleList = document.getElementById('moduleList');
+    moduleList.innerHTML = courseData.modules.map((module, index) => {
+        const isCompleted = completedModules.has(module.id);
+        const isActive = index === currentModuleIndex;
+        return `
+            <li>
+                <a href="#" 
+                   class="${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}"
+                   onclick="navigateToModule(${index}); return false;">
+                   ${index + 1}. ${module.title}
+                </a>
+            </li>
+        `;
+    }).join('');
+}
+
+// Render current module
+function renderModule(index) {
+    const module = courseData.modules[index];
+    const moduleElement = document.getElementById('courseModule');
+    moduleElement.innerHTML = module.content;
+    
+    // Re-attach event listeners for interactive elements
+    attachEventListeners();
+    
+    // Update navigation
+    renderNavigation();
+    
+    // Update buttons
+    updateButtons();
+}
+
+// Navigate to a specific module
+function navigateToModule(index) {
+    if (index >= 0 && index < courseData.modules.length) {
+        currentModuleIndex = index;
+        renderModule(currentModuleIndex);
+        updateProgress();
+        window.scrollTo(0, 0);
+    }
+}
+
+// Update progress bar
+function updateProgress() {
+    const total = courseData.modules.length;
+    const completed = completedModules.size;
+    const progress = (completed / total) * 100;
+    
+    document.getElementById('progressFill').style.width = `${progress}%`;
+    document.getElementById('progressText').textContent = `${Math.round(progress)}% Complete`;
+}
+
+// Update navigation buttons
+function updateButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    prevBtn.disabled = currentModuleIndex === 0;
+    
+    if (currentModuleIndex === courseData.modules.length - 1) {
+        nextBtn.textContent = 'Finish';
+    } else {
+        nextBtn.textContent = 'Next →';
+    }
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    document.getElementById('prevBtn').addEventListener('click', () => {
+        if (currentModuleIndex > 0) {
+            navigateToModule(currentModuleIndex - 1);
+        }
+    });
+    
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        if (currentModuleIndex < courseData.modules.length - 1) {
+            navigateToModule(currentModuleIndex + 1);
+        } else {
+            markModuleComplete(courseData.modules[currentModuleIndex].id);
+            alert('🎉 Congratulations! You\'ve completed the course!');
+        }
+    });
+}
+
+// Mark module as complete
+function markModuleComplete(moduleId) {
+    completedModules.add(moduleId);
+    updateProgress();
+    renderNavigation();
+}
+
+// Attach event listeners for interactive elements
+function attachEventListeners() {
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            copyCode(this);
+        });
+    });
+}
+
+// Copy code to clipboard
+function copyCode(button) {
+    const codeBlock = button.parentElement;
+    const code = codeBlock.querySelector('pre').textContent;
+    
+    navigator.clipboard.writeText(code).then(() => {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.background = 'var(--success-color)';
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = 'var(--primary-color)';
+        }, 2000);
+    });
+}
+
+// Quiz functionality
+function selectOption(element) {
+    const question = element.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+    
+    // Remove previous selections
+    options.forEach(opt => {
+        opt.classList.remove('selected', 'correct', 'incorrect');
+    });
+    
+    // Mark selected
+    element.classList.add('selected');
+    
+    // Check answer
+    const isCorrect = element.dataset.correct === 'true';
+    
+    if (isCorrect) {
+        element.classList.add('correct');
+        feedback.textContent = '✓ Correct! Well done.';
+        feedback.className = 'quiz-feedback show correct';
+        
+        // Mark other correct options if any
+        options.forEach(opt => {
+            if (opt.dataset.correct === 'true' && opt !== element) {
+                opt.classList.add('correct');
+            }
+        });
+    } else {
+        element.classList.add('incorrect');
+        feedback.textContent = '✗ Not quite. Try again!';
+        feedback.className = 'quiz-feedback show incorrect';
+        
+        // Show correct answer
+        options.forEach(opt => {
+            if (opt.dataset.correct === 'true') {
+                opt.classList.add('correct');
+            }
+        });
+    }
+}
+
+// Exercise checking
+function checkExercise(exerciseNum) {
+    const input = document.getElementById(`exercise${exerciseNum}`);
+    const feedback = document.getElementById(`feedback${exerciseNum}`);
+    const answer = input.value.trim();
+    
+    if (!answer) {
+        feedback.textContent = 'Please write your answer first!';
+        feedback.style.display = 'block';
+        feedback.style.background = 'rgba(245, 158, 11, 0.2)';
+        feedback.style.color = 'var(--warning-color)';
+        feedback.style.border = '1px solid var(--warning-color)';
+        return;
+    }
+    
+    let feedbackText = '';
+    let isGood = false;
+    
+    switch(exerciseNum) {
+        case 1:
+            // Check for specificity improvements
+            const hasSpecificity = answer.length > 50 && 
+                                 (answer.includes('write') || answer.includes('create') || answer.includes('explain')) &&
+                                 (answer.match(/\d+/) || answer.includes('words') || answer.includes('length'));
+            if (hasSpecificity) {
+                feedbackText = '✓ Great improvement! Your prompt is much more specific. Keep practicing!';
+                isGood = true;
+            } else {
+                feedbackText = '💡 Try adding: specific topic, target audience, length, and format requirements.';
+            }
+            break;
+            
+        case 2:
+            // Check for role assignment
+            const hasRole = answer.toLowerCase().includes('you are') || 
+                          answer.toLowerCase().includes('act as') ||
+                          answer.toLowerCase().includes('as a') ||
+                          answer.toLowerCase().includes('as an');
+            if (hasRole) {
+                feedbackText = '✓ Excellent! You\'ve assigned a role. This helps the AI provide context-specific responses.';
+                isGood = true;
+            } else {
+                feedbackText = '💡 Try starting with "You are a [role]" or "Act as a [role]" to assign expertise.';
+            }
+            break;
+            
+        case 3:
+            // Check for format specification
+            const hasFormat = answer.toLowerCase().includes('json') ||
+                           answer.toLowerCase().includes('table') ||
+                           answer.toLowerCase().includes('list') ||
+                           answer.toLowerCase().includes('format') ||
+                           answer.toLowerCase().includes('structure');
+            if (hasFormat) {
+                feedbackText = '✓ Perfect! You\'ve specified a format. This ensures consistent output structure.';
+                isGood = true;
+            } else {
+                feedbackText = '💡 Try mentioning the desired format explicitly: "in JSON format", "as a table", "in a bulleted list", etc.';
+            }
+            break;
+    }
+    
+    feedback.textContent = feedbackText;
+    feedback.style.display = 'block';
+    feedback.style.background = isGood ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)';
+    feedback.style.color = isGood ? 'var(--success-color)' : 'var(--warning-color)';
+    feedback.style.border = `1px solid ${isGood ? 'var(--success-color)' : 'var(--warning-color)'}`;
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', init);

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>Prompt Engineering & AI Usage Training</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body data-theme="dark">
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">🎓</div>
+                    <div>
+                        <h1>Prompt Engineering & AI Usage</h1>
+                        <p class="subtitle">Master the art of effective AI communication</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-icon mobile-menu-btn" id="mobileMenuBtn" title="Toggle menu">
+                        <span>☰</span>
+                    </button>
+                    <button class="btn btn-icon" id="themeToggle" title="Toggle theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button class="btn btn-icon" id="achievementsBtn" title="View achievements">
+                        <span>🏆</span>
+                    </button>
+                    <!-- Certificate button removed - only shown at end of course -->
+                </div>
+            </div>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <div class="progress-info">
+                    <span class="progress-label">Course Progress</span>
+                    <span class="progress-text" id="progressText">0% Complete</span>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-value" id="completedCount">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalCount">10</span>
+                        <span class="stat-label">Total Modules</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="timeSpent">0m</span>
+                        <span class="stat-label">Time Spent</span>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-glow"></div>
+            </div>
+        </div>
+
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <div class="main-content">
+            <aside class="sidebar" id="sidebar">
+                <nav class="course-nav">
+                    <div class="nav-header">
+                        <h2>Course Modules</h2>
+                        <button class="btn-collapse" id="collapseBtn">
+                            <span>◀</span>
+                        </button>
+                    </div>
+                    <ul id="moduleList" class="module-list">
+                        <!-- Modules will be populated by JavaScript -->
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="achievement-preview">
+                        <h3>Achievements</h3>
+                        <div class="achievement-badges" id="achievementPreview">
+                            <!-- Achievement badges will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="course-content">
+                <div id="courseModule" class="module">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </main>
+        </div>
+
+        <div class="controls">
+            <button id="prevBtn" class="btn btn-secondary" disabled>
+                <span class="btn-icon-left">←</span> Previous
+            </button>
+            <div class="control-center">
+                <button id="bookmarkBtn" class="btn btn-icon" title="Bookmark this module">
+                    <span>🔖</span>
+                </button>
+                <button id="resetBtn" class="btn btn-icon" title="Reset progress">
+                    <span>🔄</span>
+                </button>
+            </div>
+            <button id="nextBtn" class="btn btn-primary">
+                Next <span class="btn-icon-right">→</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Achievement Modal -->
+    <div id="achievementModal" class="modal">
+        <div class="modal-content achievement-modal">
+            <button class="modal-close" onclick="closeModal('achievementModal')">&times;</button>
+            <h2>🏆 Your Achievements</h2>
+            <div id="achievementsList" class="achievements-grid">
+                <!-- Achievements will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certificateModal" class="modal">
+        <div class="modal-content certificate-modal">
+            <button class="modal-close" onclick="closeModal('certificateModal')">&times;</button>
+            <div class="certificate" id="certificate">
+                <div class="certificate-border">
+                    <div class="certificate-content">
+                        <div class="certificate-header">
+                            <h1>Certificate of Completion</h1>
+                            <div class="certificate-icon">🎓</div>
+                        </div>
+                        <div class="certificate-body">
+                            <p class="certificate-text">This certifies that</p>
+                            <h2 class="certificate-name" id="certificateName">Your Name</h2>
+                            <p class="certificate-text">has successfully completed the</p>
+                            <h3 class="certificate-course">Prompt Engineering & AI Usage Training Course</h3>
+                            <p class="certificate-date">Completed on <span id="certificateDate"></span></p>
+                            <p class="certificate-id">Certificate ID: <span id="certificateId"></span></p>
+                        </div>
+                        <div class="certificate-footer">
+                            <div class="signature">
+                                <div class="signature-line"></div>
+                                <p>Course Instructor</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="certificate-actions">
+                <input type="text" id="nameInput" placeholder="Enter your name" class="name-input">
+                <button class="btn btn-primary" onclick="updateCertificate()">Update Name</button>
+                <button class="btn btn-secondary" onclick="downloadCertificate()">📥 Download</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="{{ url_for('static', filename='js/course-data.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
