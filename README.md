@@ -25,6 +25,11 @@ An interactive, modern, web-based training course for mastering prompt engineeri
 - **Time Tracking** - Monitor your learning time
 - **Certificate Generation** - Get a completion certificate
 
+### 📊 Analytics
+- **Vercel Web Analytics** - Track visitor behavior and page views
+- **Real-time Insights** - Monitor course engagement
+- **Performance Metrics** - Understand user interaction patterns
+
 ### 🎨 Modern UI/UX
 - **Dark Theme** with animated gradients
 - **Responsive Design** - Works on all devices
@@ -54,15 +59,17 @@ An interactive, modern, web-based training course for mastering prompt engineeri
 
 ## 🚀 Quick Start
 
-### Option 1: Automatic Setup (Recommended)
+### Local Development
 
-#### Linux/Mac:
+#### Option 1: Automatic Setup (Recommended)
+
+##### Linux/Mac:
 ```bash
 chmod +x start.sh
 ./start.sh
 ```
 
-#### Windows:
+##### Windows:
 ```cmd
 start.bat
 ```
@@ -136,6 +143,22 @@ Your progress is automatically saved:
 - 📊 Quiz scores
 - 🔖 Bookmarked modules
 
+## 📊 Vercel Web Analytics
+
+This project includes Vercel Web Analytics for tracking course engagement and user behavior.
+
+### Setup
+
+1. **Create a Vercel Account** - Sign up at [vercel.com](https://vercel.com)
+2. **Import Your Project** - Add this repository to Vercel
+3. **Enable Analytics** - In your Vercel project dashboard:
+   - Go to the **Analytics** tab
+   - Click **Enable**
+4. **Deploy** - Push your code to deploy on Vercel
+5. **View Data** - Check your analytics dashboard after a few hours of traffic
+
+> **Note:** Analytics requires the app to be deployed on Vercel. The tracking script is automatically included and will activate when deployed.
+
 ## 🛠️ Technical Stack
 
 - **Backend:** Flask 3.0 (Python)
@@ -143,6 +166,7 @@ Your progress is automatically saved:
 - **Styling:** Custom CSS with CSS Variables
 - **Fonts:** Inter, JetBrains Mono
 - **Storage:** LocalStorage + Optional Server Sync
+- **Analytics:** Vercel Web Analytics
 
 ## 📁 Project Structure
 
@@ -198,6 +222,54 @@ Edit `server.py` and change the port number:
 
 ```python
 app.run(host='0.0.0.0', port=3728, debug=True)
+```
+
+## 🚀 Deployment to Vercel
+
+### Deploy with Git
+
+1. **Push your code to GitHub:**
+   ```bash
+   git add .
+   git commit -m "Add Vercel Web Analytics"
+   git push origin main
+   ```
+
+2. **Sign up/Login to Vercel:**
+   - Visit [vercel.com](https://vercel.com)
+   - Sign up or log in with your GitHub account
+
+3. **Import your project:**
+   - Click "Add New" → "Project"
+   - Select your repository from GitHub
+   - Click "Import"
+
+4. **Configure the project:**
+   - Framework: Select "Other" (since it's Flask)
+   - Root Directory: Leave as default
+   - Build Command: Leave empty
+   - Output Directory: Leave empty
+
+5. **Deploy:**
+   - Click "Deploy"
+   - Wait for deployment to complete
+
+6. **Enable Analytics:**
+   - Go to your project's Analytics tab
+   - Click "Enable"
+   - Your app will start collecting data on the next deployment
+
+### Using Vercel CLI
+
+```bash
+# Install Vercel CLI globally
+npm i -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy
+vercel
 ```
 
 ## 🏆 Achievements
