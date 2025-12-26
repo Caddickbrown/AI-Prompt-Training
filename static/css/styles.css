@@ -1775,8 +1775,6 @@ body {
     }
     
     body.menu-open {
-        position: fixed;
-        width: 100%;
         overflow: hidden;
     }
 
