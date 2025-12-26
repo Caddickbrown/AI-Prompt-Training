@@ -292,9 +292,20 @@ function setupEventListeners() {
             }
         });
         
-        // Prevent overlay clicks from propagating to sidebar
+        // Handle sidebar clicks (prevent propagation to overlay & close on module selection)
         sidebar.addEventListener('click', (e) => {
+            // Always stop propagation to prevent overlay from closing menu
             e.stopPropagation();
+            
+            // Close menu when clicking a module link on mobile
+            if (isMobile() && e.target.closest('.module-list a')) {
+                // Small delay to allow the navigation to register
+                setTimeout(() => {
+                    if (sidebar.classList.contains('mobile-open')) {
+                        toggleMobileMenu(false);
+                    }
+                }, 150);
+            }
         });
         
         // Swipe-to-close gesture (only horizontal swipe from within sidebar)
@@ -347,18 +358,6 @@ function setupEventListeners() {
             isTouchingSidebar = false;
             hasMoved = false;
         }, { passive: true });
-        
-        // Close menu when clicking a module link on mobile
-        sidebar.addEventListener('click', (e) => {
-            if (isMobile() && e.target.closest('.module-list a')) {
-                // Small delay to allow the navigation to register
-                setTimeout(() => {
-                    if (sidebar.classList.contains('mobile-open')) {
-                        toggleMobileMenu(false);
-                    }
-                }, 150);
-            }
-        });
         
         // Close menu on window resize if switching to desktop
         window.addEventListener('resize', () => {
