@@ -248,11 +248,10 @@ function setupEventListeners() {
         });
     }
     
-    // Mobile menu functionality - simplified and improved
+    // Mobile menu functionality - simplified without overlay
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
     
-    if (mobileMenuBtn && sidebar && sidebarOverlay) {
+    if (mobileMenuBtn && sidebar) {
         // Check if we're on mobile
         const isMobile = () => window.innerWidth <= 968;
         
@@ -267,7 +266,6 @@ function setupEventListeners() {
             if (isMobile()) {
                 const shouldOpen = open !== null ? open : !sidebar.classList.contains('mobile-open');
                 sidebar.classList.toggle('mobile-open', shouldOpen);
-                sidebarOverlay.classList.toggle('active', shouldOpen);
                 mobileMenuBtn.classList.toggle('active', shouldOpen);
                 
                 // Lock body scroll when menu is open, but allow sidebar to scroll
@@ -285,18 +283,18 @@ function setupEventListeners() {
             toggleMobileMenu();
         });
         
-        // Close menu when clicking overlay (not sidebar content)
-        sidebarOverlay.addEventListener('click', (e) => {
-            if (sidebar.classList.contains('mobile-open')) {
-                toggleMobileMenu(false);
+        // Close menu when clicking outside sidebar on mobile
+        document.addEventListener('click', (e) => {
+            if (isMobile() && sidebar.classList.contains('mobile-open')) {
+                // Check if click is outside sidebar
+                if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    toggleMobileMenu(false);
+                }
             }
         });
         
-        // Handle sidebar clicks (prevent propagation to overlay & close on module selection)
+        // Handle sidebar clicks - close on module selection
         sidebar.addEventListener('click', (e) => {
-            // Always stop propagation to prevent overlay from closing menu
-            e.stopPropagation();
-            
             // Close menu when clicking a module link on mobile
             if (isMobile() && e.target.closest('.module-list a')) {
                 // Small delay to allow the navigation to register
