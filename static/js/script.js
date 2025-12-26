@@ -1010,17 +1010,9 @@ if (window.innerWidth <= 968) {
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(optimizeScroll, 10);
     }, { passive: true });
-    
-    // Prevent double-tap zoom on buttons
-    let lastTap = 0;
-    document.addEventListener('touchend', (e) => {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTap;
-        if (tapLength < 300 && tapLength > 0) {
-            e.preventDefault();
-        }
-        lastTap = currentTime;
-    }, false);
+    // Note: don't globally prevent double-tap zoom via touch handlers.
+    // Calling preventDefault() on touch events can suppress the subsequent "click"
+    // event on iOS/Android browsers, which breaks tapping links (e.g. module nav).
     
     // Improve code block interaction
     document.querySelectorAll('.code-block').forEach(block => {
