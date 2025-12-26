@@ -1755,7 +1755,7 @@ body {
         width: 320px;
         max-width: 85vw;
         height: 100vh;
-        z-index: 999;
+        z-index: 1001;
         margin: 0;
         border-radius: 0;
         border-left: none;
@@ -1788,7 +1788,7 @@ body {
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.7);
-        z-index: 998;
+        z-index: 1000;
         opacity: 0;
         transition: opacity var(--transition-base);
         will-change: opacity;
@@ -1994,8 +1994,11 @@ body {
     .controls .btn-icon {
         min-width: 36px;
         min-height: 36px;
+        max-width: 44px;
+        max-height: 44px;
         padding: 0.5rem;
         font-size: 0.95rem;
+        flex: 0 0 auto;
     }
 
     .code-block {
@@ -2266,8 +2269,11 @@ body {
     .controls .btn-icon {
         min-width: 36px;
         min-height: 36px;
+        max-width: 42px;
+        max-height: 42px;
         padding: 0.45rem;
         font-size: 0.9rem;
+        flex: 0 0 auto;
     }
 
     .achievements-grid {
@@ -2870,7 +2876,8 @@ body {
     }
     
     
-    .btn {
+    .controls .btn-primary,
+    .controls .btn-secondary {
         padding: 0.625rem 0.875rem;
         font-size: 0.8rem;
         min-height: 40px;
@@ -2879,12 +2886,22 @@ body {
         touch-action: manipulation;
     }
     
+    .btn {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.8rem;
+        min-height: 40px;
+        touch-action: manipulation;
+    }
+    
     .controls .btn-icon {
         min-width: 36px;
         min-height: 36px;
+        max-width: 40px;
+        max-height: 40px;
         padding: 0.45rem;
         font-size: 0.85rem;
         touch-action: manipulation;
+        flex: 0 0 auto;
     }
     
     /* Better button spacing on very small screens */
