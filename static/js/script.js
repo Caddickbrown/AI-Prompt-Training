@@ -248,7 +248,7 @@ function setupEventListeners() {
         });
     }
     
-    // Mobile menu functionality with swipe gestures
+    // Mobile menu functionality - simplified and improved
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     
@@ -256,12 +256,11 @@ function setupEventListeners() {
         // Check if we're on mobile
         const isMobile = () => window.innerWidth <= 968;
         
-        // Touch/swipe tracking
+        // Touch tracking for swipe-to-close (only within sidebar)
         let touchStartX = 0;
         let touchStartY = 0;
-        let touchEndX = 0;
-        let touchEndY = 0;
-        let isSwiping = false;
+        let isTouchingSidebar = false;
+        let hasMoved = false;
         
         // Toggle mobile menu
         const toggleMobileMenu = (open = null) => {
@@ -270,100 +269,94 @@ function setupEventListeners() {
                 sidebar.classList.toggle('mobile-open', shouldOpen);
                 sidebarOverlay.classList.toggle('active', shouldOpen);
                 mobileMenuBtn.classList.toggle('active', shouldOpen);
-                // Prevent body scroll when menu is open
+                
+                // Lock body scroll when menu is open, but allow sidebar to scroll
                 if (shouldOpen) {
-                    document.body.style.overflow = 'hidden';
-                    // Add class for animation
                     document.body.classList.add('menu-open');
                 } else {
-                    document.body.style.overflow = '';
                     document.body.classList.remove('menu-open');
                 }
             }
         };
         
-        mobileMenuBtn.addEventListener('click', () => toggleMobileMenu());
+        // Hamburger button click
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
         
-        // Close menu when clicking overlay
-        sidebarOverlay.addEventListener('click', () => {
+        // Close menu when clicking overlay (not sidebar content)
+        sidebarOverlay.addEventListener('click', (e) => {
             if (sidebar.classList.contains('mobile-open')) {
                 toggleMobileMenu(false);
             }
         });
         
-        // Swipe gestures for sidebar
-        const handleTouchStart = (e) => {
+        // Prevent overlay clicks from propagating to sidebar
+        sidebar.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
+        // Swipe-to-close gesture (only horizontal swipe from within sidebar)
+        sidebar.addEventListener('touchstart', (e) => {
+            if (!isMobile() || !sidebar.classList.contains('mobile-open')) return;
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
-            isSwiping = false;
-        };
+            isTouchingSidebar = true;
+            hasMoved = false;
+        }, { passive: true });
         
-        const handleTouchMove = (e) => {
-            if (!isMobile()) return;
+        sidebar.addEventListener('touchmove', (e) => {
+            if (!isTouchingSidebar || !isMobile() || !sidebar.classList.contains('mobile-open')) return;
+            
             const currentX = e.touches[0].clientX;
             const currentY = e.touches[0].clientY;
             const deltaX = currentX - touchStartX;
             const deltaY = currentY - touchStartY;
             
-            // Detect horizontal swipe
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
-                isSwiping = true;
-                e.preventDefault();
-                
-                // Swipe right from left edge to open menu
-                if (deltaX > 0 && touchStartX < 50 && !sidebar.classList.contains('mobile-open')) {
-                    const progress = Math.min(deltaX / 320, 1);
-                    sidebar.style.transform = `translateX(${-320 + (deltaX * progress)}px)`;
-                    sidebarOverlay.style.opacity = (progress * 0.7).toString();
-                }
-                // Swipe left to close menu
-                else if (deltaX < 0 && sidebar.classList.contains('mobile-open')) {
-                    const progress = Math.min(Math.abs(deltaX) / 320, 1);
-                    sidebar.style.transform = `translateX(${-deltaX * progress}px)`;
-                    sidebarOverlay.style.opacity = (0.7 * (1 - progress)).toString();
+            // Only detect horizontal swipe if it's clearly horizontal (not vertical scroll)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 15) {
+                hasMoved = true;
+                // Only prevent default for horizontal swipe left (to close)
+                if (deltaX < 0) {
+                    e.preventDefault();
                 }
             }
-        };
+            // Allow vertical scrolling - don't prevent default for vertical movement
+        }, { passive: false });
         
-        const handleTouchEnd = (e) => {
-            if (!isSwiping || !isMobile()) return;
+        sidebar.addEventListener('touchend', (e) => {
+            if (!isTouchingSidebar || !isMobile() || !sidebar.classList.contains('mobile-open')) {
+                isTouchingSidebar = false;
+                return;
+            }
             
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
             const deltaX = touchEndX - touchStartX;
-            const threshold = 100; // Minimum swipe distance
+            const deltaY = touchEndY - touchStartY;
             
-            // Reset transform
-            sidebar.style.transform = '';
-            sidebarOverlay.style.opacity = '';
-            
-            // Swipe right to open
-            if (deltaX > threshold && touchStartX < 50) {
-                toggleMobileMenu(true);
-            }
-            // Swipe left to close
-            else if (deltaX < -threshold && sidebar.classList.contains('mobile-open')) {
-                toggleMobileMenu(false);
+            // Check if it was a horizontal swipe (not vertical scroll)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 80) {
+                // Swipe left to close
+                if (deltaX < 0) {
+                    toggleMobileMenu(false);
+                }
             }
             
-            isSwiping = false;
-        };
-        
-        // Track touch end position
-        document.addEventListener('touchstart', handleTouchStart, { passive: true });
-        document.addEventListener('touchmove', handleTouchMove, { passive: false });
-        document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].clientX;
-            touchEndY = e.changedTouches[0].clientY;
-            handleTouchEnd(e);
+            isTouchingSidebar = false;
+            hasMoved = false;
         }, { passive: true });
         
         // Close menu when clicking a module link on mobile
-        document.addEventListener('click', (e) => {
+        sidebar.addEventListener('click', (e) => {
             if (isMobile() && e.target.closest('.module-list a')) {
+                // Small delay to allow the navigation to register
                 setTimeout(() => {
                     if (sidebar.classList.contains('mobile-open')) {
                         toggleMobileMenu(false);
                     }
-                }, 300);
+                }, 150);
             }
         });
         

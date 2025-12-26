@@ -208,7 +208,8 @@ html[data-theme="light"] {
 }
 
 [data-theme="light"] .sidebar-overlay.active {
-    background: transparent;
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(4px);
 }
 
 [data-theme="light"] .example-box {
@@ -1719,6 +1720,10 @@ body {
         max-width: 100vw;
     }
     
+    body.menu-open {
+        touch-action: none;
+    }
+    
     .container {
         padding: 0.875rem;
         max-width: 100%;
@@ -1755,29 +1760,47 @@ body {
         width: 320px;
         max-width: 85vw;
         height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile */
         z-index: 1001;
         margin: 0;
         border-radius: 0;
         border-left: none;
         border-top: none;
         border-bottom: none;
-        transition: transform var(--transition-base), left var(--transition-base);
+        border-right: 2px solid var(--border-color);
+        transition: left var(--transition-base);
         overflow-y: auto;
+        overflow-x: hidden;
         box-shadow: var(--shadow-xl);
-        will-change: transform;
         -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
+        overscroll-behavior-y: contain;
+        overscroll-behavior-x: none;
+        /* Ensure smooth scrolling */
+        scroll-behavior: smooth;
     }
 
     .sidebar.mobile-open {
         left: 0;
-        transform: translateX(0);
+    }
+    
+    /* Visual feedback for scrollable sidebar content */
+    .sidebar::after {
+        content: '';
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(to top, var(--surface-color), transparent);
+        pointer-events: none;
+        z-index: 10;
     }
     
     body.menu-open {
+        overflow: hidden;
         position: fixed;
         width: 100%;
-        overflow: hidden;
+        height: 100vh;
     }
 
     .sidebar-overlay {
@@ -1787,12 +1810,12 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        /* Keep overlay for click-to-close, but don't dim the UI */
-        background: transparent;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
         z-index: 1000;
         opacity: 0;
         transition: opacity var(--transition-base);
-        will-change: opacity;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .sidebar-overlay.active {
@@ -2087,7 +2110,15 @@ body {
 
     .module-list a {
         padding: 1rem;
-        min-height: 48px; /* Touch-friendly */
+        min-height: 52px; /* Touch-friendly - larger target */
+        display: flex;
+        align-items: center;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(99, 102, 241, 0.2);
+    }
+    
+    .module-list {
+        padding-right: 0.5rem; /* Space for scrollbar if needed */
     }
 
     .toast {
@@ -2932,9 +2963,9 @@ body {
     .sidebar {
         width: 85vw;
         max-width: 320px;
-        padding: 1rem;
-        padding-top: max(1rem, env(safe-area-inset-top));
-        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+        padding: 1.25rem;
+        padding-top: max(1.25rem, env(safe-area-inset-top));
+        padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
     }
     
     .nav-header {
@@ -2944,18 +2975,29 @@ body {
     
     .nav-header h2 {
         font-size: 1rem;
+        user-select: none;
+    }
+    
+    .btn-collapse {
+        min-width: 40px;
+        min-height: 40px;
+        touch-action: manipulation;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .module-list a {
-        padding: 0.875rem 0.75rem;
-        font-size: 0.875rem;
-        gap: 0.625rem;
+        padding: 1rem 0.875rem;
+        font-size: 0.9rem;
+        gap: 0.75rem;
+        min-height: 52px;
     }
     
     .module-number {
-        width: 26px;
-        height: 26px;
-        font-size: 0.75rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
     }
     
     /* Better toast */
