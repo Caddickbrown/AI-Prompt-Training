@@ -203,7 +203,6 @@ function setupEventListeners() {
     
     document.getElementById('achievementsBtn').addEventListener('click', showAchievements);
     // Certificate button removed from header - only shown in conclusion module
-    document.getElementById('bookmarkBtn').addEventListener('click', bookmarkModule);
     document.getElementById('resetBtn').addEventListener('click', resetProgress);
     
     // Theme toggle functionality
@@ -938,20 +937,6 @@ document.addEventListener('click', (e) => {
         e.target.classList.remove('show');
     }
 });
-
-// Bookmark functionality
-function bookmarkModule() {
-    const module = courseData.modules[currentModuleIndex];
-    const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-    
-    if (bookmarks.includes(module.id)) {
-        showToast('Already bookmarked!', 'info');
-    } else {
-        bookmarks.push(module.id);
-        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-        showToast('Module bookmarked!', 'success');
-    }
-}
 
 // Reset progress
 function resetProgress() {

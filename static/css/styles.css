@@ -373,7 +373,7 @@ body {
 
 .logo-icon {
     font-size: 3rem;
-    animation: bounce 2s infinite;
+    animation: bounce 4s ease-in-out infinite;
 }
 
 @keyframes bounce {
@@ -508,7 +508,7 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    animation: shimmer 2s infinite;
+    animation: shimmer 3s ease-in-out infinite;
 }
 
 [data-theme="light"] .progress-glow {
@@ -1295,11 +1295,6 @@ body {
     animation: fadeIn 0.6s ease-out 0.6s both;
 }
 
-.control-center {
-    display: flex;
-    gap: 0.5rem;
-}
-
 /* Module Metadata */
 .module-metadata {
     display: flex;
@@ -1793,8 +1788,6 @@ body {
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
         z-index: 998;
         opacity: 0;
         transition: opacity var(--transition-base);
@@ -1976,18 +1969,20 @@ body {
     }
 
     .controls {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 0.5rem;
         padding: 0.75rem;
         margin-top: 1.5rem;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .control-center {
-        order: -1;
-        width: 100%;
-        justify-content: center;
-        margin-bottom: 0.5rem;
-        gap: 0.5rem;
+    .controls #resetBtn {
+        order: 2;
+    }
+
+    .controls #nextBtn {
+        order: 3;
     }
 
     .btn {
@@ -1996,10 +1991,11 @@ body {
         min-height: 40px; /* Touch target size */
     }
 
-    .btn-icon {
-        min-width: 40px;
-        min-height: 40px;
-        padding: 0.625rem;
+    .controls .btn-icon {
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0.5rem;
+        font-size: 0.95rem;
     }
 
     .code-block {
@@ -2267,10 +2263,11 @@ body {
         min-height: 40px;
     }
     
-    .btn-icon {
-        min-width: 40px;
-        min-height: 40px;
-        padding: 0.5rem;
+    .controls .btn-icon {
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0.45rem;
+        font-size: 0.9rem;
     }
 
     .achievements-grid {
@@ -2872,10 +2869,6 @@ body {
         margin: 0 -0.5rem -0.5rem;
     }
     
-    .control-center {
-        margin-bottom: 0.25rem;
-        gap: 0.375rem;
-    }
     
     .btn {
         padding: 0.625rem 0.875rem;
@@ -2886,10 +2879,11 @@ body {
         touch-action: manipulation;
     }
     
-    .btn-icon {
-        min-width: 40px;
-        min-height: 40px;
-        padding: 0.5rem;
+    .controls .btn-icon {
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0.45rem;
+        font-size: 0.85rem;
         touch-action: manipulation;
     }
     
@@ -3159,9 +3153,21 @@ body {
     }
     
     /* Reduce animations on mobile for better performance */
-    * {
-        animation-duration: 0.3s !important;
+    /* Only speed up UI transitions, not decorative animations */
+    .module,
+    .btn,
+    .modal,
+    .sidebar {
         transition-duration: 0.2s !important;
+    }
+    
+    /* Keep decorative animations at slower speeds */
+    .logo-icon {
+        animation-duration: 4s !important;
+    }
+    
+    .progress-glow {
+        animation-duration: 3s !important;
     }
     
     /* Optimize rendering */
