@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>notes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111;
+      --bg2: #1a1a1a;
+      --bg3: #222;
+      --border: #2a2a2a;
+      --text: #e0e0e0;
+      --muted: #666;
+      --accent: #c8903f;
+      --radius: 6px;
+      --font: 'DM Sans', system-ui, sans-serif;
+      --mono: ui-monospace, 'Cascadia Code', monospace;
+    }
+
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); }
+
+    /* ── Gate ── */
+    #gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    #gate form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 260px;
+    }
+    #gate input {
+      padding: 10px 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      outline: none;
+    }
+    #gate input:focus { border-color: var(--accent); }
+    #gate button {
+      padding: 10px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius);
+      color: #111;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #gate .err { color: #e05555; font-size: 13px; }
+
+    /* ── App ── */
+    #app { display: none; height: 100vh; flex-direction: column; }
+    #app.open { display: flex; }
+
+    /* toolbar */
+    #toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    #toolbar .spacer { flex: 1; }
+    .tbtn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .tbtn:hover { color: var(--text); border-color: #444; }
+    .tbtn.icon { padding: 5px 8px; }
+    #save-indicator { font-size: 12px; color: var(--muted); }
+
+    /* layout */
+    #body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* editor pane */
+    #editor-pane {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px 24px;
+      overflow-y: auto;
+    }
+    #date-line {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #date-line span { cursor: pointer; }
+    #date-line span:hover { color: var(--text); }
+    #editor {
+      flex: 1;
+      width: 100%;
+      min-height: 300px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.7;
+      resize: none;
+      outline: none;
+    }
+
+    /* entries sidebar */
+    #sidebar {
+      width: 260px;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    #sidebar-head {
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    #entries-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .entry-row {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .entry-row:hover { background: var(--bg2); }
+    .entry-row.active { background: var(--bg3); }
+    .entry-date { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+    .entry-preview {
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* mobile: hide sidebar by default */
+    @media (max-width: 600px) {
+      #sidebar { display: none; }
+    }
+
+    /* toast */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--text);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    #toast.show { opacity: 1; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── Gate ── -->
+<div id="gate">
+  <form id="gate-form">
+    <input type="password" id="gate-input" placeholder="password" autocomplete="current-password" />
+    <button type="submit">enter</button>
+    <div class="err" id="gate-err" style="display:none">nope</div>
+  </form>
+</div>
+
+<!-- ── App ── -->
+<div id="app">
+  <div id="toolbar">
+    <button class="tbtn" id="new-btn">+ new</button>
+    <span id="save-indicator"></span>
+    <div class="spacer"></div>
+    <button class="tbtn" id="date-btn" title="Insert today's date (Ctrl+D)">📅 date</button>
+    <button class="tbtn" id="copy-btn" title="Copy all entries as plain text">copy all</button>
+  </div>
+
+  <div id="body">
+    <div id="editor-pane">
+      <div id="date-line">
+        <span id="current-date-label"></span>
+      </div>
+      <textarea id="editor" placeholder="start writing…" spellcheck="true"></textarea>
+    </div>
+    <div id="sidebar">
+      <div id="sidebar-head">entries</div>
+      <div id="entries-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+/* ── State ── */
+let SESSION = null;      // password (kept in memory only)
+let entries = [];        // [{id, ts, text}]  loaded from server
+let current = null;      // id of entry being edited (null = new)
+let saveTimer = null;
+let dirty = false;
+
+/* ── Helpers ── */
+const $  = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, '0');
+
+function nowIso() {
+  const d = new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+
+function nowTs() {
+  const d = new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function fmtDate(ts) {
+  // ts = "YYYY-MM-DD HH:MM"
+  const [date, time] = ts.split(' ');
+  const [y, m, d] = date.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  const weekday = dt.toLocaleDateString('en-GB', { weekday: 'short' });
+  const dayMonth = dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  return `${weekday} ${dayMonth}${time ? ' · ' + time : ''}`;
+}
+
+function preview(text) {
+  return text.trim().split('\n').find(l => l.trim()) || '(empty)';
+}
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function setSaveIndicator(txt) {
+  $('save-indicator').textContent = txt;
+}
+
+/* ── Gate ── */
+$('gate-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const pw = $('gate-input').value;
+  // Validate by trying to fetch entries
+  const ok = await loadEntries(pw);
+  if (ok) {
+    SESSION = pw;
+    $('gate').style.display = 'none';
+    $('app').classList.add('open');
+    renderSidebar();
+    newEntry();
+  } else {
+    $('gate-err').style.display = 'block';
+  }
+});
+
+/* ── API ── */
+async function api(method, body) {
+  const res = await fetch('/api/jnl/entries', {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-JNL-Password': SESSION,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+async function loadEntries(pw) {
+  try {
+    const res = await fetch('/api/jnl/entries', {
+      headers: { 'X-JNL-Password': pw }
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    entries = data.entries || [];
+    return true;
+  } catch { return false; }
+}
+
+async function saveEntry(text) {
+  const ts = nowTs();
+  if (!text.trim()) {
+    // delete if empty and we had an id
+    if (current) {
+      entries = entries.filter(e => e.id !== current);
+      current = null;
+      renderSidebar();
+      await api('DELETE', { id: current });
+    }
+    return;
+  }
+
+  if (current) {
+    // update
+    const idx = entries.findIndex(e => e.id === current);
+    if (idx >= 0) entries[idx].text = text;
+    await api('PUT', { id: current, text });
+  } else {
+    // new
+    const id = Date.now().toString();
+    current = id;
+    entries.unshift({ id, ts, text });
+    await api('POST', { id, ts, text });
+  }
+  renderSidebar();
+  setSaveIndicator('saved');
+  setTimeout(() => setSaveIndicator(''), 2000);
+}
+
+/* ── Editor ── */
+function setDateLabel(ts) {
+  $('current-date-label').textContent = ts ? fmtDate(ts) : fmtDate(nowTs());
+}
+
+function newEntry() {
+  current = null;
+  $('editor').value = '';
+  setDateLabel(null);
+  dirty = false;
+  setSaveIndicator('');
+  $$('.entry-row').forEach(r => r.classList.remove('active'));
+  $('editor').focus();
+}
+
+function openEntry(id) {
+  const e = entries.find(e => e.id === id);
+  if (!e) return;
+  current = id;
+  $('editor').value = e.text;
+  setDateLabel(e.ts);
+  dirty = false;
+  setSaveIndicator('');
+  renderSidebar();
+  $('editor').focus();
+}
+
+const $$ = sel => [...document.querySelectorAll(sel)];
+
+function scheduleSave() {
+  dirty = true;
+  setSaveIndicator('…');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => saveEntry($('editor').value), 1200);
+}
+
+$('editor').addEventListener('input', scheduleSave);
+
+// Keyboard shortcuts
+$('editor').addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+    e.preventDefault();
+    insertAtCursor($('editor'), nowIso());
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'd' && document.activeElement !== $('editor')) {
+    e.preventDefault();
+    $('editor').focus();
+    insertAtCursor($('editor'), nowIso());
+  }
+});
+
+function insertAtCursor(ta, text) {
+  const s = ta.selectionStart, end = ta.selectionEnd;
+  ta.value = ta.value.slice(0, s) + text + ta.value.slice(end);
+  ta.selectionStart = ta.selectionEnd = s + text.length;
+  scheduleSave();
+}
+
+/* ── Toolbar buttons ── */
+$('new-btn').addEventListener('click', () => {
+  if (dirty) { clearTimeout(saveTimer); saveEntry($('editor').value); }
+  newEntry();
+});
+
+$('date-btn').addEventListener('click', () => {
+  $('editor').focus();
+  insertAtCursor($('editor'), nowIso());
+});
+
+$('copy-btn').addEventListener('click', () => {
+  if (!entries.length) { toast('nothing to copy'); return; }
+  const all = [...entries].reverse().map(e =>
+    `${fmtDate(e.ts)}\n\n${e.text.trim()}`
+  ).join('\n\n---\n\n');
+  navigator.clipboard.writeText(all).then(() => toast('copied to clipboard'));
+});
+
+/* ── Sidebar ── */
+function renderSidebar() {
+  const list = $('entries-list');
+  list.innerHTML = '';
+  for (const e of entries) {
+    const row = document.createElement('div');
+    row.className = 'entry-row' + (e.id === current ? ' active' : '');
+    row.innerHTML = `<div class="entry-date">${fmtDate(e.ts)}</div><div class="entry-preview">${preview(e.text)}</div>`;
+    row.addEventListener('click', () => openEntry(e.id));
+    list.appendChild(row);
+  }
+}
+
+/* ── Init date label ── */
+setDateLabel(null);
+</script>
+</body>
+</html>
