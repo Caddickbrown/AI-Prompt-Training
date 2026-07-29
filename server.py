@@ -137,6 +137,8 @@ def jnl_entries():
         for e in entries_list:
             if e['id'] == data['id']:
                 e['text'] = data['text']
+                if 'ts' in data:
+                    e['ts'] = data['ts']
                 break
         _gh_put(entries_list, sha)
         return jsonify({'ok': True})

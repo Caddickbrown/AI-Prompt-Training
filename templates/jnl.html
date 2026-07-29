@@ -18,45 +18,24 @@
       --accent: #c8903f;
       --radius: 6px;
       --font: 'DM Sans', system-ui, sans-serif;
-      --mono: ui-monospace, 'Cascadia Code', monospace;
     }
 
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); }
 
     /* ── Gate ── */
     #gate {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      display: flex; align-items: center; justify-content: center; height: 100vh;
     }
-    #gate form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 260px;
-    }
+    #gate form { display: flex; flex-direction: column; gap: 10px; width: 260px; }
     #gate input {
-      padding: 10px 12px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 15px;
-      outline: none;
+      padding: 10px 12px; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text); font-family: var(--font);
+      font-size: 15px; outline: none;
     }
     #gate input:focus { border-color: var(--accent); }
     #gate button {
-      padding: 10px;
-      background: var(--accent);
-      border: none;
-      border-radius: var(--radius);
-      color: #111;
-      font-family: var(--font);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 10px; background: var(--accent); border: none; border-radius: var(--radius);
+      color: #111; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer;
     }
     #gate .err { color: #e05555; font-size: 13px; }
 
@@ -66,137 +45,102 @@
 
     /* toolbar */
     #toolbar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
     #toolbar .spacer { flex: 1; }
     .tbtn {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 10px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--muted);
-      font-family: var(--font);
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 10px; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--muted); font-family: var(--font);
+      font-size: 13px; cursor: pointer; white-space: nowrap;
     }
     .tbtn:hover { color: var(--text); border-color: #444; }
-    .tbtn.icon { padding: 5px 8px; }
+    .tbtn.active { color: var(--accent); border-color: var(--accent); }
     #save-indicator { font-size: 12px; color: var(--muted); }
 
     /* layout */
-    #body {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
+    #body { display: flex; flex: 1; overflow: hidden; }
 
-    /* editor pane */
-    #editor-pane {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      padding: 20px 24px;
-      overflow-y: auto;
+    /* write pane */
+    #write-pane {
+      display: flex; flex-direction: column; flex: 1;
+      padding: 20px 24px; overflow-y: auto;
     }
-    #date-line {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    #ts-label {
+      font-size: 12px; color: var(--muted); margin-bottom: 14px;
+      font-family: ui-monospace, monospace;
     }
-    #date-line span { cursor: pointer; }
-    #date-line span:hover { color: var(--text); }
     #editor {
-      flex: 1;
-      width: 100%;
-      min-height: 300px;
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 16px;
-      line-height: 1.7;
-      resize: none;
-      outline: none;
+      flex: 1; width: 100%; min-height: 300px; background: transparent;
+      border: none; color: var(--text); font-family: var(--font);
+      font-size: 16px; line-height: 1.7; resize: none; outline: none;
     }
 
-    /* entries sidebar */
-    #sidebar {
-      width: 260px;
-      border-left: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      flex-shrink: 0;
+    /* entries pane */
+    #entries-pane {
+      width: 300px; border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0;
     }
-    #sidebar-head {
-      padding: 10px 12px;
-      font-size: 12px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    #entries-head {
+      padding: 10px 12px; font-size: 11px; color: var(--muted);
+      border-bottom: 1px solid var(--border); text-transform: uppercase;
+      letter-spacing: 0.08em; flex-shrink: 0;
     }
-    #entries-list {
-      flex: 1;
-      overflow-y: auto;
-    }
+    #entries-list { flex: 1; overflow-y: auto; }
     .entry-row {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
+      padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer;
     }
     .entry-row:hover { background: var(--bg2); }
-    .entry-row.active { background: var(--bg3); }
-    .entry-date { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
-    .entry-preview {
-      font-size: 13px;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .entry-row.active { background: var(--bg3); border-left: 2px solid var(--accent); }
+    .entry-ts {
+      font-size: 11px; color: var(--muted); margin-bottom: 4px;
+      font-family: ui-monospace, monospace;
+    }
+    .entry-body {
+      font-size: 13px; color: var(--text); line-height: 1.5;
+      white-space: pre-wrap; word-break: break-word;
+      max-height: 80px; overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
     }
 
-    /* mobile: hide sidebar by default */
-    @media (max-width: 600px) {
-      #sidebar { display: none; }
+    /* reading view overlay */
+    #read-pane {
+      display: none; position: absolute; inset: 0; background: var(--bg);
+      z-index: 10; flex-direction: column;
+    }
+    #read-pane.open { display: flex; }
+    #read-toolbar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    #read-toolbar .spacer { flex: 1; }
+    #read-ts { font-size: 12px; color: var(--muted); font-family: ui-monospace, monospace; }
+    #read-body {
+      flex: 1; padding: 24px; overflow-y: auto;
+      font-size: 16px; line-height: 1.8; white-space: pre-wrap; word-break: break-word;
     }
 
     /* toast */
     #toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px 16px;
-      font-size: 13px;
-      color: var(--text);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.2s;
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 8px 16px; font-size: 13px; color: var(--text);
+      pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 100;
     }
     #toast.show { opacity: 1; }
+
+    @media (max-width: 640px) {
+      #entries-pane { display: none; }
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- ── Gate ── -->
+<!-- Gate -->
 <div id="gate">
   <form id="gate-form">
     <input type="password" id="gate-input" placeholder="password" autocomplete="current-password" />
@@ -205,26 +149,38 @@
   </form>
 </div>
 
-<!-- ── App ── -->
+<!-- App -->
 <div id="app">
   <div id="toolbar">
     <button class="tbtn" id="new-btn">+ new</button>
     <span id="save-indicator"></span>
     <div class="spacer"></div>
-    <button class="tbtn" id="date-btn" title="Insert today's date (Ctrl+D)">📅 date</button>
+    <button class="tbtn" id="date-btn" title="Insert timestamp (Ctrl+D)">📅 stamp</button>
     <button class="tbtn" id="copy-btn" title="Copy all entries as plain text">copy all</button>
   </div>
 
-  <div id="body">
-    <div id="editor-pane">
-      <div id="date-line">
-        <span id="current-date-label"></span>
-      </div>
+  <div id="body" style="position:relative">
+    <!-- Write pane -->
+    <div id="write-pane">
+      <div id="ts-label"></div>
       <textarea id="editor" placeholder="start writing…" spellcheck="true"></textarea>
     </div>
-    <div id="sidebar">
-      <div id="sidebar-head">entries</div>
+
+    <!-- Entries pane -->
+    <div id="entries-pane">
+      <div id="entries-head">entries</div>
       <div id="entries-list"></div>
+    </div>
+
+    <!-- Read overlay (within #body) -->
+    <div id="read-pane">
+      <div id="read-toolbar">
+        <button class="tbtn" id="read-back">← back</button>
+        <div class="spacer"></div>
+        <span id="read-ts"></span>
+        <button class="tbtn" id="read-edit">edit</button>
+      </div>
+      <div id="read-body"></div>
     </div>
   </div>
 </div>
@@ -234,39 +190,18 @@
 <script>
 'use strict';
 
-/* ── State ── */
-let SESSION = null;      // password (kept in memory only)
-let entries = [];        // [{id, ts, text}]  loaded from server
-let current = null;      // id of entry being edited (null = new)
+let SESSION = null;
+let entries = [];
+let current = null;   // id being edited (null = new)
 let saveTimer = null;
 let dirty = false;
 
-/* ── Helpers ── */
-const $  = id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, '0');
-
-function nowIso() {
-  const d = new Date();
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-}
 
 function nowTs() {
   const d = new Date();
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function fmtDate(ts) {
-  // ts = "YYYY-MM-DD HH:MM"
-  const [date, time] = ts.split(' ');
-  const [y, m, d] = date.split('-').map(Number);
-  const dt = new Date(y, m-1, d);
-  const weekday = dt.toLocaleDateString('en-GB', { weekday: 'short' });
-  const dayMonth = dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-  return `${weekday} ${dayMonth}${time ? ' · ' + time : ''}`;
-}
-
-function preview(text) {
-  return text.trim().split('\n').find(l => l.trim()) || '(empty)';
+  return `[${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}]`;
 }
 
 function toast(msg) {
@@ -276,21 +211,18 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
-function setSaveIndicator(txt) {
-  $('save-indicator').textContent = txt;
-}
+function setSaveIndicator(txt) { $('save-indicator').textContent = txt; }
 
 /* ── Gate ── */
 $('gate-form').addEventListener('submit', async e => {
   e.preventDefault();
   const pw = $('gate-input').value;
-  // Validate by trying to fetch entries
   const ok = await loadEntries(pw);
   if (ok) {
     SESSION = pw;
     $('gate').style.display = 'none';
     $('app').classList.add('open');
-    renderSidebar();
+    renderEntries();
     newEntry();
   } else {
     $('gate-err').style.display = 'block';
@@ -301,10 +233,7 @@ $('gate-form').addEventListener('submit', async e => {
 async function api(method, body) {
   const res = await fetch('/api/jnl/entries', {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      'X-JNL-Password': SESSION,
-    },
+    headers: { 'Content-Type': 'application/json', 'X-JNL-Password': SESSION },
     body: body ? JSON.stringify(body) : undefined,
   });
   if (!res.ok) return null;
@@ -313,9 +242,7 @@ async function api(method, body) {
 
 async function loadEntries(pw) {
   try {
-    const res = await fetch('/api/jnl/entries', {
-      headers: { 'X-JNL-Password': pw }
-    });
+    const res = await fetch('/api/jnl/entries', { headers: { 'X-JNL-Password': pw } });
     if (!res.ok) return false;
     const data = await res.json();
     entries = data.entries || [];
@@ -323,64 +250,57 @@ async function loadEntries(pw) {
   } catch { return false; }
 }
 
+/* ── Write ── */
+function newEntry() {
+  current = null;
+  $('editor').value = '';
+  $('ts-label').textContent = nowTs();
+  dirty = false;
+  setSaveIndicator('');
+  closeReadPane();
+  renderEntries();
+  $('editor').focus();
+}
+
+function openForEdit(id) {
+  const e = entries.find(e => e.id === id);
+  if (!e) return;
+  current = id;
+  $('editor').value = e.text;
+  $('ts-label').textContent = e.ts;
+  dirty = false;
+  setSaveIndicator('');
+  closeReadPane();
+  renderEntries();
+  $('editor').focus();
+}
+
 async function saveEntry(text) {
-  const ts = nowTs();
   if (!text.trim()) {
-    // delete if empty and we had an id
     if (current) {
-      entries = entries.filter(e => e.id !== current);
+      const id = current;
       current = null;
-      renderSidebar();
-      await api('DELETE', { id: current });
+      entries = entries.filter(e => e.id !== id);
+      renderEntries();
+      await api('DELETE', { id });
     }
     return;
   }
-
+  const ts = $('ts-label').textContent || nowTs();
   if (current) {
-    // update
     const idx = entries.findIndex(e => e.id === current);
-    if (idx >= 0) entries[idx].text = text;
-    await api('PUT', { id: current, text });
+    if (idx >= 0) { entries[idx].text = text; entries[idx].ts = ts; }
+    await api('PUT', { id: current, text, ts });
   } else {
-    // new
     const id = Date.now().toString();
     current = id;
     entries.unshift({ id, ts, text });
     await api('POST', { id, ts, text });
   }
-  renderSidebar();
+  renderEntries();
   setSaveIndicator('saved');
   setTimeout(() => setSaveIndicator(''), 2000);
 }
-
-/* ── Editor ── */
-function setDateLabel(ts) {
-  $('current-date-label').textContent = ts ? fmtDate(ts) : fmtDate(nowTs());
-}
-
-function newEntry() {
-  current = null;
-  $('editor').value = '';
-  setDateLabel(null);
-  dirty = false;
-  setSaveIndicator('');
-  $$('.entry-row').forEach(r => r.classList.remove('active'));
-  $('editor').focus();
-}
-
-function openEntry(id) {
-  const e = entries.find(e => e.id === id);
-  if (!e) return;
-  current = id;
-  $('editor').value = e.text;
-  setDateLabel(e.ts);
-  dirty = false;
-  setSaveIndicator('');
-  renderSidebar();
-  $('editor').focus();
-}
-
-const $$ = sel => [...document.querySelectorAll(sel)];
 
 function scheduleSave() {
   dirty = true;
@@ -390,20 +310,10 @@ function scheduleSave() {
 }
 
 $('editor').addEventListener('input', scheduleSave);
-
-// Keyboard shortcuts
 $('editor').addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
     e.preventDefault();
-    insertAtCursor($('editor'), nowIso());
-  }
-});
-
-document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'd' && document.activeElement !== $('editor')) {
-    e.preventDefault();
-    $('editor').focus();
-    insertAtCursor($('editor'), nowIso());
+    insertAtCursor($('editor'), nowTs() + ' ');
   }
 });
 
@@ -414,7 +324,7 @@ function insertAtCursor(ta, text) {
   scheduleSave();
 }
 
-/* ── Toolbar buttons ── */
+/* ── Toolbar ── */
 $('new-btn').addEventListener('click', () => {
   if (dirty) { clearTimeout(saveTimer); saveEntry($('editor').value); }
   newEntry();
@@ -422,32 +332,54 @@ $('new-btn').addEventListener('click', () => {
 
 $('date-btn').addEventListener('click', () => {
   $('editor').focus();
-  insertAtCursor($('editor'), nowIso());
+  insertAtCursor($('editor'), nowTs() + ' ');
 });
 
 $('copy-btn').addEventListener('click', () => {
   if (!entries.length) { toast('nothing to copy'); return; }
-  const all = [...entries].reverse().map(e =>
-    `${fmtDate(e.ts)}\n\n${e.text.trim()}`
-  ).join('\n\n---\n\n');
-  navigator.clipboard.writeText(all).then(() => toast('copied to clipboard'));
+  const all = [...entries].reverse().map(e => `${e.ts}\n\n${e.text.trim()}`).join('\n\n---\n\n');
+  navigator.clipboard.writeText(all).then(() => toast('copied'));
 });
 
-/* ── Sidebar ── */
-function renderSidebar() {
+/* ── Entries list ── */
+function renderEntries() {
   const list = $('entries-list');
   list.innerHTML = '';
   for (const e of entries) {
     const row = document.createElement('div');
     row.className = 'entry-row' + (e.id === current ? ' active' : '');
-    row.innerHTML = `<div class="entry-date">${fmtDate(e.ts)}</div><div class="entry-preview">${preview(e.text)}</div>`;
-    row.addEventListener('click', () => openEntry(e.id));
+    row.innerHTML = `<div class="entry-ts">${e.ts}</div><div class="entry-body">${esc(e.text)}</div>`;
+    row.addEventListener('click', () => openReadPane(e.id));
     list.appendChild(row);
   }
 }
 
-/* ── Init date label ── */
-setDateLabel(null);
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ── Read pane ── */
+function openReadPane(id) {
+  const e = entries.find(e => e.id === id);
+  if (!e) return;
+  $('read-ts').textContent = e.ts;
+  $('read-body').textContent = e.text;
+  $('read-pane').dataset.id = id;
+  $('read-pane').classList.add('open');
+}
+
+function closeReadPane() {
+  $('read-pane').classList.remove('open');
+}
+
+$('read-back').addEventListener('click', closeReadPane);
+$('read-edit').addEventListener('click', () => {
+  const id = $('read-pane').dataset.id;
+  openForEdit(id);
+});
+
+/* ── Init ── */
+$('ts-label').textContent = nowTs();
 </script>
 </body>
 </html>
