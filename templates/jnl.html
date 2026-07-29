@@ -16,6 +16,7 @@
       --text: #e0e0e0;
       --muted: #666;
       --accent: #c8903f;
+      --danger: #c0392b;
       --radius: 6px;
       --font: 'DM Sans', system-ui, sans-serif;
     }
@@ -23,9 +24,7 @@
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); }
 
     /* ── Gate ── */
-    #gate {
-      display: flex; align-items: center; justify-content: center; height: 100vh;
-    }
+    #gate { display: flex; align-items: center; justify-content: center; height: 100vh; }
     #gate form { display: flex; flex-direction: column; gap: 10px; width: 260px; }
     #gate input {
       padding: 10px 12px; background: var(--bg2); border: 1px solid var(--border);
@@ -56,11 +55,12 @@
       font-size: 13px; cursor: pointer; white-space: nowrap;
     }
     .tbtn:hover { color: var(--text); border-color: #444; }
-    .tbtn.active { color: var(--accent); border-color: var(--accent); }
+    .tbtn.danger { color: var(--danger); }
+    .tbtn.danger:hover { border-color: var(--danger); }
     #save-indicator { font-size: 12px; color: var(--muted); }
 
     /* layout */
-    #body { display: flex; flex: 1; overflow: hidden; }
+    #body { display: flex; flex: 1; overflow: hidden; position: relative; }
 
     /* write pane */
     #write-pane {
@@ -85,8 +85,14 @@
     #entries-head {
       padding: 10px 12px; font-size: 11px; color: var(--muted);
       border-bottom: 1px solid var(--border); text-transform: uppercase;
-      letter-spacing: 0.08em; flex-shrink: 0;
+      letter-spacing: 0.08em; flex-shrink: 0; display: flex; align-items: center; gap: 6px;
     }
+    #entries-head .spacer { flex: 1; }
+    #del-all-btn {
+      font-size: 11px; color: var(--danger); background: none; border: none;
+      cursor: pointer; font-family: var(--font); padding: 0; opacity: 0.7;
+    }
+    #del-all-btn:hover { opacity: 1; }
     #entries-list { flex: 1; overflow-y: auto; }
     .entry-row {
       padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer;
@@ -105,7 +111,7 @@
       mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
     }
 
-    /* reading view overlay */
+    /* read/edit pane overlay */
     #read-pane {
       display: none; position: absolute; inset: 0; background: var(--bg);
       z-index: 10; flex-direction: column;
@@ -117,10 +123,33 @@
     }
     #read-toolbar .spacer { flex: 1; }
     #read-ts { font-size: 12px; color: var(--muted); font-family: ui-monospace, monospace; }
-    #read-body {
+
+    /* read vs edit modes */
+    #read-text {
       flex: 1; padding: 24px; overflow-y: auto;
       font-size: 16px; line-height: 1.8; white-space: pre-wrap; word-break: break-word;
     }
+    #read-editor {
+      display: none; flex: 1; padding: 20px 24px; overflow-y: auto;
+    }
+    #read-editor textarea {
+      width: 100%; height: 100%; min-height: 300px; background: transparent;
+      border: none; color: var(--text); font-family: var(--font);
+      font-size: 16px; line-height: 1.7; resize: none; outline: none;
+    }
+
+    /* confirm modal */
+    #confirm-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      z-index: 50; align-items: center; justify-content: center;
+    }
+    #confirm-overlay.open { display: flex; }
+    #confirm-box {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+      padding: 24px; max-width: 320px; width: 90%; display: flex; flex-direction: column; gap: 16px;
+    }
+    #confirm-box p { font-size: 14px; line-height: 1.5; color: var(--text); }
+    #confirm-box .actions { display: flex; gap: 8px; justify-content: flex-end; }
 
     /* toast */
     #toast {
@@ -159,7 +188,7 @@
     <button class="tbtn" id="copy-btn" title="Copy all entries as plain text">copy all</button>
   </div>
 
-  <div id="body" style="position:relative">
+  <div id="body">
     <!-- Write pane -->
     <div id="write-pane">
       <div id="ts-label"></div>
@@ -168,19 +197,36 @@
 
     <!-- Entries pane -->
     <div id="entries-pane">
-      <div id="entries-head">entries</div>
+      <div id="entries-head">
+        <span>entries</span>
+        <div class="spacer"></div>
+        <button id="del-all-btn">delete all</button>
+      </div>
       <div id="entries-list"></div>
     </div>
 
-    <!-- Read overlay (within #body) -->
+    <!-- Read/edit overlay -->
     <div id="read-pane">
       <div id="read-toolbar">
         <button class="tbtn" id="read-back">← back</button>
         <div class="spacer"></div>
         <span id="read-ts"></span>
-        <button class="tbtn" id="read-edit">edit</button>
+        <button class="tbtn" id="read-toggle-edit">edit</button>
+        <button class="tbtn danger" id="read-delete">delete</button>
       </div>
-      <div id="read-body"></div>
+      <div id="read-text"></div>
+      <div id="read-editor"><textarea id="read-textarea" spellcheck="true"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm modal -->
+<div id="confirm-overlay">
+  <div id="confirm-box">
+    <p id="confirm-msg"></p>
+    <div class="actions">
+      <button class="tbtn" id="confirm-cancel">cancel</button>
+      <button class="tbtn danger" id="confirm-ok">delete</button>
     </div>
   </div>
 </div>
@@ -192,9 +238,12 @@
 
 let SESSION = null;
 let entries = [];
-let current = null;   // id being edited (null = new)
+let current = null;
 let saveTimer = null;
 let dirty = false;
+let readId = null;
+let readEditing = false;
+let readSaveTimer = null;
 
 const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, '0');
@@ -204,14 +253,28 @@ function nowTs() {
   return `[${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}]`;
 }
 
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 function toast(msg) {
-  const t = $('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
 function setSaveIndicator(txt) { $('save-indicator').textContent = txt; }
+
+/* ── Confirm ── */
+function confirm(msg) {
+  return new Promise(res => {
+    $('confirm-msg').textContent = msg;
+    $('confirm-overlay').classList.add('open');
+    const ok = $('confirm-ok'), cancel = $('confirm-cancel');
+    function cleanup() { $('confirm-overlay').classList.remove('open'); }
+    ok.onclick = () => { cleanup(); res(true); };
+    cancel.onclick = () => { cleanup(); res(false); };
+  });
+}
 
 /* ── Gate ── */
 $('gate-form').addEventListener('submit', async e => {
@@ -244,31 +307,16 @@ async function loadEntries(pw) {
   try {
     const res = await fetch('/api/jnl/entries', { headers: { 'X-JNL-Password': pw } });
     if (!res.ok) return false;
-    const data = await res.json();
-    entries = data.entries || [];
+    entries = (await res.json()).entries || [];
     return true;
   } catch { return false; }
 }
 
-/* ── Write ── */
+/* ── Write pane ── */
 function newEntry() {
-  current = null;
+  current = null; dirty = false;
   $('editor').value = '';
   $('ts-label').textContent = nowTs();
-  dirty = false;
-  setSaveIndicator('');
-  closeReadPane();
-  renderEntries();
-  $('editor').focus();
-}
-
-function openForEdit(id) {
-  const e = entries.find(e => e.id === id);
-  if (!e) return;
-  current = id;
-  $('editor').value = e.text;
-  $('ts-label').textContent = e.ts;
-  dirty = false;
   setSaveIndicator('');
   closeReadPane();
   renderEntries();
@@ -278,8 +326,7 @@ function openForEdit(id) {
 async function saveEntry(text) {
   if (!text.trim()) {
     if (current) {
-      const id = current;
-      current = null;
+      const id = current; current = null;
       entries = entries.filter(e => e.id !== id);
       renderEntries();
       await api('DELETE', { id });
@@ -303,8 +350,7 @@ async function saveEntry(text) {
 }
 
 function scheduleSave() {
-  dirty = true;
-  setSaveIndicator('…');
+  dirty = true; setSaveIndicator('…');
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => saveEntry($('editor').value), 1200);
 }
@@ -329,54 +375,106 @@ $('new-btn').addEventListener('click', () => {
   if (dirty) { clearTimeout(saveTimer); saveEntry($('editor').value); }
   newEntry();
 });
-
-$('date-btn').addEventListener('click', () => {
-  $('editor').focus();
-  insertAtCursor($('editor'), nowTs() + ' ');
-});
-
+$('date-btn').addEventListener('click', () => { $('editor').focus(); insertAtCursor($('editor'), nowTs() + ' '); });
 $('copy-btn').addEventListener('click', () => {
   if (!entries.length) { toast('nothing to copy'); return; }
   const all = [...entries].reverse().map(e => `${e.ts}\n\n${e.text.trim()}`).join('\n\n---\n\n');
   navigator.clipboard.writeText(all).then(() => toast('copied'));
 });
+$('del-all-btn').addEventListener('click', async () => {
+  if (!entries.length) { toast('nothing to delete'); return; }
+  const yes = await confirm(`Delete all ${entries.length} entries? This cannot be undone.`);
+  if (!yes) return;
+  entries = []; current = null;
+  await api('DELETE', { all: true });
+  renderEntries();
+  newEntry();
+  toast('deleted');
+});
 
 /* ── Entries list ── */
 function renderEntries() {
-  const list = $('entries-list');
-  list.innerHTML = '';
+  const list = $('entries-list'); list.innerHTML = '';
   for (const e of entries) {
     const row = document.createElement('div');
-    row.className = 'entry-row' + (e.id === current ? ' active' : '');
-    row.innerHTML = `<div class="entry-ts">${e.ts}</div><div class="entry-body">${esc(e.text)}</div>`;
+    row.className = 'entry-row' + (e.id === current && !readId ? ' active' : '') + (e.id === readId ? ' active' : '');
+    row.innerHTML = `<div class="entry-ts">${esc(e.ts)}</div><div class="entry-body">${esc(e.text)}</div>`;
     row.addEventListener('click', () => openReadPane(e.id));
     list.appendChild(row);
   }
 }
 
-function esc(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-/* ── Read pane ── */
+/* ── Read/edit pane ── */
 function openReadPane(id) {
   const e = entries.find(e => e.id === id);
   if (!e) return;
+  readId = id; readEditing = false;
   $('read-ts').textContent = e.ts;
-  $('read-body').textContent = e.text;
-  $('read-pane').dataset.id = id;
+  $('read-text').textContent = e.text;
+  $('read-text').style.display = '';
+  $('read-editor').style.display = 'none';
+  $('read-toggle-edit').textContent = 'edit';
   $('read-pane').classList.add('open');
+  renderEntries();
 }
 
 function closeReadPane() {
   $('read-pane').classList.remove('open');
+  readId = null; readEditing = false;
+  renderEntries();
 }
 
 $('read-back').addEventListener('click', closeReadPane);
-$('read-edit').addEventListener('click', () => {
-  const id = $('read-pane').dataset.id;
-  openForEdit(id);
+
+$('read-toggle-edit').addEventListener('click', () => {
+  const e = entries.find(e => e.id === readId);
+  if (!e) return;
+  if (!readEditing) {
+    // switch to edit mode
+    readEditing = true;
+    $('read-textarea').value = e.text;
+    $('read-text').style.display = 'none';
+    $('read-editor').style.display = 'flex';
+    $('read-toggle-edit').textContent = 'done';
+    $('read-textarea').focus();
+    $('read-textarea').oninput = () => {
+      clearTimeout(readSaveTimer);
+      readSaveTimer = setTimeout(async () => {
+        const text = $('read-textarea').value;
+        const idx = entries.findIndex(e => e.id === readId);
+        if (idx >= 0) entries[idx].text = text;
+        await api('PUT', { id: readId, text, ts: e.ts });
+        $('read-text').textContent = text;
+        renderEntries();
+      }, 1000);
+    };
+  } else {
+    // switch back to read mode
+    readEditing = false;
+    const text = $('read-textarea').value;
+    $('read-text').textContent = text;
+    $('read-text').style.display = '';
+    $('read-editor').style.display = 'none';
+    $('read-toggle-edit').textContent = 'edit';
+  }
 });
+
+$('read-delete').addEventListener('click', async () => {
+  const e = entries.find(e => e.id === readId);
+  if (!e) return;
+  const yes = await confirm(`Delete this entry from ${e.ts}?`);
+  if (!yes) return;
+  const id = readId;
+  entries = entries.filter(e => e.id !== id);
+  await api('DELETE', { id });
+  closeReadPane();
+  if (current === id) { current = null; $('editor').value = ''; $('ts-label').textContent = nowTs(); }
+  renderEntries();
+  toast('deleted');
+});
+
+/* ── Handle delete all in API (need server to support it) ── */
+// already handled by sending all:true to DELETE endpoint
 
 /* ── Init ── */
 $('ts-label').textContent = nowTs();

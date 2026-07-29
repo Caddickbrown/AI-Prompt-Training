@@ -144,8 +144,11 @@ def jnl_entries():
         return jsonify({'ok': True})
 
     if request.method == 'DELETE':
-        entries_list = [e for e in entries_list if e['id'] != data.get('id')]
-        _gh_put(entries_list, sha)
+        if data.get('all'):
+            _gh_put([], sha)
+        else:
+            entries_list = [e for e in entries_list if e['id'] != data.get('id')]
+            _gh_put(entries_list, sha)
         return jsonify({'ok': True})
 
 
